@@ -15,27 +15,27 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      # 1) Check out your full repository (including history)
+      # 1. Check out your code (full history needed to push back)
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      # 2) Compile every .tex file found in the repo
+      # 2. Compile every .tex via a glob in root_file
       - name: Compile all LaTeX files
         uses: xu-cheng/latex-action@v2
         with:
-          # automatically finds and builds each .tex
-          glob_root_file: '*.tex'
-          # pass flags to latexmk
+          # root_file is REQUIRED (it now supports globs)
+          root_file: |
+            *.tex
+          # pass your latexmk flags here
           args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
 
-      # 3) Commit any updated PDFs back to the same branch
+      # 3. Commit and push all resulting PDFs
       - name: Commit compiled PDFs
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "🔄 rebuild PDFs"
-          # catch every .pdf under any folder
           file_pattern: '**/*.pdf'
           author_name: github-actions
           author_email: github-actions@github.com
