@@ -1,42 +1,40 @@
-name: Build all LaTeX and Publish PDFs
+name: Build all LaTeX files to PDF
 
 on:
   push:
     paths:
       - '**/*.tex'
-      - 'images/**'
-      - '.github/workflows/latex.yml'
+      - '!**/output/*'  # Exclude specific directories if needed
   pull_request:
     paths:
       - '**/*.tex'
-      - 'images/**'
 
 jobs:
-  build-and-publish:
+  build-pdfs:
     runs-on: ubuntu-latest
     steps:
-      # 1. Check out your code (full history needed to push back)
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      # 2. Compile every .tex via a glob in root_file
-      - name: Compile all LaTeX files
-        uses: xu-cheng/latex-action@v2
-        with:
-          # root_file is REQUIRED (it now supports globs)
-          root_file: |
-            *.tex
-          # pass your latexmk flags here
-          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+      - name: Install LaTeX dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-full latexmk
 
-      # 3. Commit and push all resulting PDFs
-      - name: Commit compiled PDFs
+      - name: Find and compile all .tex files
+        run: |
+          find . -name "*.tex" -not -path "./.github/*" | while read texfile; do
+            echo "Compiling $texfile..."
+            dir=$(dirname "$texfile")
+            cd "$dir" || exit
+            filename=$(basename "$texfile" .tex)
+            latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode "$filename.tex"
+            cd - || exit
+          done
+
+      - name: Commit PDFs
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "🔄 rebuild PDFs"
+          commit_message: "Auto-generated PDFs from LaTeX"
           file_pattern: '**/*.pdf'
-          author_name: github-actions
-          author_email: github-actions@github.com
           branch: ${{ github.ref_name }}
