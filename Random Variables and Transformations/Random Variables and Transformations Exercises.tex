@@ -76,4 +76,46 @@ Let $X$ be a random variable taking values in the interval $[0,1]$.
     
 \end{solution}
 
+\section{Core Competency Exam Questions}
+\begin{bbox}{{2018 Summer Practice, \#14}}
+    Suppose $f: [0,\infty) \to \mathbb R$ is a function such that $f(x+y) = f(x)f(y)$.
+    \begin{itemize}
+        \item Show that $f(x)\geq 0$ for all real $x \geq 0$.
+        \item Show that $f(0) \in \{0,1\}$.
+        \item Show that for any nonnegative rational number $r$ one has $f(r)=c^r$, where $c\in[0,\infty)$.
+        \item Suppose $X$ is a non-negative random variable such that 
+        \[
+        P(X > s+t) = P(X>s) P(X>t)
+        \] for every $s,t \geq 0$. If $X$ has a continuous distribution function, name the distribution of $X$.
+    \end{itemize}
+\end{bbox}
+\begin{solution}
+    First of all, this just looks like the exponential function.
+    \begin{itemize}
+        \item \[
+        f(x) = f(\frac{x}{2} + \frac{x}{2}) = f(\frac{x}{2})^2 \geq 0
+        \]
+        \item \[
+        f(0) = f(0)^2 \implies f(0) \in \{0,1\}
+        \
+        \]
+        \item First of all, we can use proof by induction to show that $f(n) = c^n$ for $n\in \mathbb N$. by letting $c = f(1)$.
+        \newline
+        $r$ is nonnegative rational number so $r=\frac{p}{q}$ where $p,q$ are positive integers. Note \[
+        f(1) = f\left(\frac{1}{q} * q\right) =f\left(\frac{1}{q}\right)^q \implies f\left(\frac{1}{q}\right) = c^{\frac{1}{q}} 
+        \]
+        This then implies \[
+        f\left(\frac{p}{q}\right) = c^{\frac{p}{q}}
+        \]
+        Comment: Thank god I'm at least able to solve this problem single-handedly.
+        \item The set of rational numbers is dense in $\mathbb R$. I hope the reader understands what this means.
+        \item This is apparently the exponential distribution.
+        \newline
+        Let $f(x) = 1 - F(x)$ where $F(x)$ is the cdf of $X$. Then 
+        \[
+        f(s+t) = f(s)f(t)
+        \]
+        By the previous parts, $f(\cdot)$ is the exponential function, which characterizes the exponential function.
+    \end{itemize}
+\end{solution}
 \end{document}
