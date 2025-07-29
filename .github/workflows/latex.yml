@@ -1,4 +1,9 @@
+# .github/workflows/latex.yml
 name: Build LaTeX and Publish PDF
+
+# 1) Grant the workflow write access so it can push PDFs back
+permissions:
+  contents: write
 
 on:
   push:
@@ -14,23 +19,29 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+
     steps:
+      # 2) Checkout with credentials persisted so we can push
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          persist-credentials: true
 
+      # 3) Compile your master document
       - name: Compile master LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
           root_file: main.tex
           args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
 
+      # 4) Commit & push the produced PDF
       - name: Commit compiled PDF
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "🔄 rebuild PDF"
           file_pattern: 'main.pdf'
-          author_name: github-actions
-          author_email: github-actions@github.com
+          # use the newer inputs for author identity
+          commit_user_name: github-actions
+          commit_user_email: github-actions@github.com
           branch: ${{ github.ref_name }}
