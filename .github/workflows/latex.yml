@@ -1,5 +1,4 @@
-# .github/workflows/latex.yml
-name: Build all LaTeX and Publish PDFs
+name: Build LaTeX and Publish PDF
 
 on:
   push:
@@ -16,41 +15,22 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      # 1. Check out the full repo (so we can commit back)
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      # 2. Install TeX Live + latexmk
-      - name: Install TeX Live & latexmk
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y texlive-latex-extra latexmk
+      - name: Compile master LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: main.tex
+          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
 
-      # 3. Find every .tex and compile it to PDF
-      - name: Compile all .tex files
-        run: |
-          find . -type f -name '*.tex' -print0 \
-            | while IFS= read -r -d '' tex; do
-                echo "::group::Building $tex"
-                latexmk -pdf -interaction=nonstopmode -file-line-error "$tex"
-                echo "::endgroup::"
-              done
-
-      # 4. (Optional) Clean up LaTeX aux files to keep repo tidy
-      - name: Remove auxiliary files
-        run: |
-          find . -type f \( -name '*.aux' -o -name '*.log' \
-            -o -name '*.fls' -o -name '*.fdb_latexmk' -o -name '*.out' \) \
-            -delete
-
-      # 5. Commit any updated PDFs
-      - name: Commit compiled PDFs
+      - name: Commit compiled PDF
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "🔄 rebuild PDFs"
-          file_pattern: '**/*.pdf'
+          commit_message: "🔄 rebuild PDF"
+          file_pattern: 'main.pdf'
           author_name: github-actions
           author_email: github-actions@github.com
           branch: ${{ github.ref_name }}
