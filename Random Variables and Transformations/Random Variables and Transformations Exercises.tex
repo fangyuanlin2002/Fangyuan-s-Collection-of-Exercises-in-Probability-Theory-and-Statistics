@@ -1,0 +1,79 @@
+\documentclass[../main]{subfiles}
+\begin{document}
+\chapter{Random Variables and Transformations}
+\subsection{Median Minimizes the Absolute Error}
+\begin{bbox}{Median Minimizes the Absolute/$L^1$ Error}
+    Let $X$ be a random variable. Show that the median of $X$ is the constant $a$ that minimizes $\mathbb E |X-a|$.
+\end{bbox}
+\begin{solution}
+    \begin{enumerate}
+        % \item By definition, the median $m$ of $X$ is a number such that 
+        % \[
+        % \Pr[X \geq m] \geq \frac{1}{2}, \quad \Pr[X\leq m] \geq \frac{1}{2}.
+        % \]
+        \item To make progress, we need to write something down. Let $f$ be the probability density function corresponding to $X$.
+        \[
+        E |X-a| = \int_{-\infty}^\infty |x-a| f(x)\dd x
+        \]
+        \item By linearity,
+        \[
+        E |X-a| = \int_{-\infty}^\infty |x-a| f(x)\dd x = \int_{-\infty}^a (a-x) f(x)  \dd x + \int_{a}^\infty (x-a) f(x) \dd x
+        \]
+        \item Differentiating with respect to $a$ and set the derivative to zero, we get that
+        \[
+        F(a) + af(a) - af(a) - af(a) - (\frac{\dd}{\dd a} aF(\infty) - aF(a)) = 0
+        \]
+        \item Simplify to get 
+        \[
+        F(a) - a f(a) - 1 + af(a) + F(a) = 0 \implies F(a) = \frac{1}{2}
+        \]
+        \item By definition, the minimizer $a$ is the median of $X$.
+    \end{enumerate}
+\end{solution}
+\subsection{A Tight Bound of Variance of Bounded Random Variables}
+\begin{bbox}{A Tight Bound of Variance of Bounded Random Variables}
+Let $X$ be a random variable taking values in the interval $[0,1]$. 
+    \begin{itemize}
+    \item Show that the $\Var X \leq \frac{1}{4}$.
+    \item Show that this bound is tight by finding a $X$ that achieves this bound.
+\end{itemize}
+\end{bbox}
+\begin{solution}
+    I provide two approaches to solve the first part. 
+    \begin{enumerate}
+        \item The first approach starts by noting the fact that $X^2 \leq X$ on $[0,1]$. Then we have that 
+        \[
+        \mathbb E [X^2] \leq \mathbb E [X].
+        \]
+        \item Then it's natural for us to consider the decomposition of variance 
+        \[
+        \Var X = \mathbb E [X^2] - \mathbb E[X]^2 \leq \mathbb E[X] - \mathbb E [X^2]. 
+        \]
+        \item Applying calculus to maximize $\mu - \mu^2$ on $[0,1]$, we get 
+        \[
+        \frac{\dd}{\dd \mu} (\mu - \mu^2) = 1-2\mu = 0 \quad \implies \mu = \frac{1}{2}. \quad \frac{\dd^2}{\dd\mu^2}(\mu-\mu^2) = -2 < 0.
+        \]
+        \item Finally, $\Var X \leq \frac{1}{2} - \frac{1}{2}^2 = \frac{1}{4}$. 
+    \end{enumerate}
+    \begin{enumerate}
+        \item The second approach uses the fact that the expectation is the single constant-predictor that minimizes the mean square error. In particular, it's at least as good as the constant-predictor $\frac{1}{2}$:
+        \[
+        \mathbb E \left[(X-\mu)^2\right] \leq \mathbb E\left[(X-\frac{1}{2})^2\right].
+        \]
+        \item The maximum distance between $X$ and $\frac{1}{2}$ is $\frac{1}{2}$ since $X\in [0,1]$. Therefore,
+        \[
+        \mathbb E\left[(X-\frac{1}{2})^2\right] \leq \frac{1}{4}.
+        \]
+    \end{enumerate}
+    For the second part of the problem, it was immediate for me to think of the random variable 
+    \[
+    X = \begin{cases}
+        0 \quad \text{w.p. $\frac{1}{2}$} \\
+        1 \quad \text{w.p. $1$} 
+    \end{cases}.
+    \]
+    
+    
+\end{solution}
+
+\end{document}
