@@ -1,0 +1,40 @@
+name: Build LaTeX and Publish PDF
+
+on:
+  push:
+    paths:
+      - '**.tex'
+      - 'images/**'
+      - '.github/workflows/latex.yml'
+  pull_request:
+    paths:
+      - '**.tex'
+      - 'images/**'
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup TeX Live
+        uses: xu-cheng/latex-action@v2
+        with:
+          latexmk-flags: "-pdf -interaction=nonstopmode -file-line-error"
+
+      - name: Rename PDF
+        run: |
+          root=$(basename *.tex .tex)
+          mv "${root}.pdf" paper.pdf
+
+      - name: Commit compiled PDF
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "🔄 rebuild PDF"
+          file_pattern: paper.pdf
+          author_name: github-actions
+          author_email: github-actions@github.com
+          branch: ${{ github.ref_name }}
