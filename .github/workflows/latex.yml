@@ -1,40 +1,42 @@
-name: Build LaTeX and Publish PDF
+name: Build all LaTeX and Publish PDFs
 
 on:
   push:
     paths:
-      - '**.tex'
+      - '**/*.tex'
       - 'images/**'
       - '.github/workflows/latex.yml'
   pull_request:
     paths:
-      - '**.tex'
+      - '**/*.tex'
       - 'images/**'
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
+      # 1) Check out your full repository (including history)
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup TeX Live
+      # 2) Compile every .tex file found in the repo
+      - name: Compile all LaTeX files
         uses: xu-cheng/latex-action@v2
         with:
-          latexmk-flags: "-pdf -interaction=nonstopmode -file-line-error"
+          # automatically finds and builds each .tex
+          glob_root_file: '*.tex'
+          # pass flags to latexmk
+          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
 
-      - name: Rename PDF
-        run: |
-          root=$(basename *.tex .tex)
-          mv "${root}.pdf" paper.pdf
-
-      - name: Commit compiled PDF
+      # 3) Commit any updated PDFs back to the same branch
+      - name: Commit compiled PDFs
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "🔄 rebuild PDF"
-          file_pattern: paper.pdf
+          commit_message: "🔄 rebuild PDFs"
+          # catch every .pdf under any folder
+          file_pattern: '**/*.pdf'
           author_name: github-actions
           author_email: github-actions@github.com
           branch: ${{ github.ref_name }}
