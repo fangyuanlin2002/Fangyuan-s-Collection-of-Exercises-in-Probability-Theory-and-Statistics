@@ -21,6 +21,90 @@
         \end{enumerate}
     \end{proof}
 \end{bbox}
+
+\section{Orthogonality}
+Orthogonal Matrices have the following properties:
+\begin{itemize}
+    \item $U^{-1}=U^T$
+    \item Rows and columns are orthogonal unit vectors.
+    \item Preserves the inner product of vectors: $\langle x,y\rangle = \langle Ux, Uy\rangle$.
+    \item Isometric: length/distance preserving.
+    \item Rigit rotation, reflection, rotoreflection.
+\end{itemize}
+
+\section{Singular Value Decomposition}
+The Principal Component Analysis PCA is a byproduct of SVD. Let $X$ denote the original data matrix. Let $X^*$ be the (column-)centered matrix. (In machine learning, each row represents a data point and each column represents a feature). Let $\hat X$ denote the centered, normalized matrix.
+\begin{itemize}
+    \item $X^{*T}X^*$ is the covariance matrix.
+    \item $\hat X^T \hat X$ is the correlation matrix.
+    \item $X^T X$ is the cross-product.
+\end{itemize}
+Consider an $n\times d$ matrix $A$
+\begin{bbox}{Singular Value Decomposition}
+    Let $A$ be an $n\times d$ matrix with singular vectors $v_1,\dots, v_r$ and corresponding singular values $\sigma_1,\dots, \sigma_r$. Then $u_i = \frac{1}{\sigma_i} Av_i$ are the left singular vectors and $A$ can be decomposed into a sum of rank one matrices as 
+    \[
+    A = \sum_{i=1}^r \sigma_i u_i v_i^T
+    \]
+    \begin{itemize}
+        \item Compute $A^T A$. This is a symmetric and positive semi-definite matrix, so it has orthonormal eigenvectors $v_i$ and non-negative eigenvalues $\lambda_i$ by the Spectral theorem.
+        \item The singular values are $\sigma_i = \sqrt{\lambda_i}$
+        \item $V = [v_i]$ is the matrix of right singular values.
+        \item Define $u_i = \frac{1}{\sigma_i}Av_i$
+    \end{itemize}
+\end{bbox}
+\begin{pbox}{Intuition behind SVD}
+    Consider the optimization problem:
+    \[
+    \max_{\|v\|=1} \|Av\| = \max_{\|v\|=1} v^T A^T Av
+    \]
+    This is a Rayleigh quotient of $A^T A$, so its maximum value corresponds to its largest eigenvalue!
+    \begin{itemize}
+        \item If we define $u_i = \frac{1}{\sigma_i}Av_i$, then we get $Av_i = \sigma_i u_i$ and $u_i$ are orthonomal vectors.
+    \end{itemize}
+    Let's verify the algorithm is correct:
+    \[
+    u_i^T A v_i = (\frac{1}{\sigma_i} Av_i)^TAv_j = \frac{\sigma_i^2}{\sigma_i} = \sigma_i
+    \]
+\end{pbox}
+\begin{itemize}
+    \item We can think of $A$ as three steps: rotation $V^T$, then horizontal/vertical scaling ($\Sigma$), lastly rotation $U$.
+    \item Use \begin{verbatim}
+        from scipy import linalg
+        U, s, Vh = linalg.svd(X)
+    \end{verbatim}
+    to compute the SVD of matrix $X$.
+    \item Any matrix can be quickly decomposed into SVD form.
+    \item One important and obvious application of SVD is data compression.
+\end{itemize}
+\begin{pbox}{Apply SVD to a two by two matrix}
+    Let $M = \begin{bmatrix}
+        0 & 1\\
+        -1 & 0
+    \end{bmatrix}$, rotation by ninety degrees clockwise. Note that this matrix has complex eigenvalue of $-i$. Let's compute the SVD of it.
+    \[
+    SVD(M) = \begin{bmatrix}
+        0 & 1\\
+        1 & 0
+    \end{bmatrix} \begin{bmatrix}
+        1 & 0 \\
+        0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        -1 & 0 \\
+        0 & 1
+    \end{bmatrix}
+    \]
+    
+    \begin{itemize}
+        \item $V^T$ is reflection about the $y$-axis / rotation by 180 degress about $y$-axis.
+        \item $\Sigma$ is the trivial scaling.
+        \item $U$ is rotation by 180 degress about the origin. (reflection about both the $x$ and $y$-axes).
+        \item The rank $1$ approximation would be $\begin{bmatrix}
+            0 & 0\\
+            -1 & 0
+        \end{bmatrix}$
+    \end{itemize}
+\end{pbox}
 \section{Determinant}
 \subsection{The Determinant is the Product of Eigenvalues}
 \begin{proof}
@@ -269,6 +353,114 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     There can be no other eigenvalues because $A$ has rank-one.
     \newline
     Comment: Should find this problem straightforward.
-
 \end{solution}
+\begin{bbox}{Heisenberg Uncertainty Principle}
+    Suppose $A, B \in \mathbb R^{n\times n}$ are symmetric matrices satisfying $AB + BA = Id$. Show that for all vectors $v\in \mathbb R^n\backslash\{0_n\}$,
+    \[
+    \max \{\frac{\|Av\|_2}{\|v\|_2}, \frac{\|Bv\|_2}{\|v\|_2}\} \geq 1/\sqrt{2}.
+    \]
+\end{bbox}
+\begin{solution}
+    This seems to be an interesting problem. Here's my thought process (which turned out to be misleading tho, because the canonical solution is simple): since the problem mentioned $A,B$ are symmetric and we are apparently dealing with Rayleigh quotient, and a maximization problem, so we should definitely look at the eigenvalue of $A,B$.
+    \begin{enumerate}
+        \item Since \(A\) and \(B\) are real symmetric, so is
+            \[
+            (A - B)^2.
+            \]
+            But for any symmetric \(X\),  
+            \[
+            X^2\;\succeq\;0
+            \qquad\bigl(\text{i.e.\ }v^T X^2 v = \|Xv\|^2\ge0\bigr).
+            \]
+            Hence
+            \[
+            (A-B)^2 \;\succeq\;0
+            \;\Longrightarrow\;
+            A^2 - (AB+BA) + B^2 \;\succeq\;0
+            \;\Longrightarrow\;
+            A^2 + B^2 \;\succeq\;(AB+BA)\;=\;I.
+            \]
+            \item Loewner order \(A^2+B^2\succeq I\) means all eigenvalues of \(A^2+B^2\) are \(\ge 1\).  Equivalently, for every \(v\)
+            \[
+            v^T(A^2+B^2)\,v
+            \;\ge\;v^T v
+            \;\Longrightarrow\;
+            \|Av\|^2 + \|Bv\|^2 \;\ge\;\|v\|^2.
+            \]
+            \item Finally,
+                \[
+                \max\{\|Av\|^2,\;\|Bv\|^2\}
+                \;\ge\;\frac{\|Av\|^2 + \|Bv\|^2}{2}
+                \;\ge\;\frac{\|v\|^2}{2},
+                \]
+                so
+                \[
+                \max\Bigl\{\frac{\|Av\|}{\|v\|},\,\frac{\|Bv\|}{\|v\|}\Bigr\}
+                \;\ge\;\frac1{\sqrt 2},
+                \]
+    \end{enumerate}
+
+    The canonical clean solution is actually to consider the inner product
+    \begin{align*}
+        \|v\|_2^2 =v^T v &= v^T I v = v^T(AB+BA)v\\
+        &= v^T AB v + v^T BA v\\
+        &\leq 2 |\langle Av, Bv \rangle| \\
+        &\le 2 \|Av\|_2 \|Bv\|_2    
+        \end{align*}
+        where the last inequality is by Cauchy schwarz.
+        \newline
+        Finally, one of $\frac{\|Av\|_2}{\|v\|_2}$ and $\frac{\|Bv\|_2}{\|v\|_2}$ must be greater than $\frac{1}{\sqrt{2}}$. 
+        \newline
+        Comment: This teaches us a lesson that whenever we see the $2$-norm, consider playing with $v^Tv$. I was too obsessed with eigenvalues...
+\end{solution} 
+\begin{bbox}{Invertibility }
+    Let $A=(a_{ij})$ be an $n\times n$ real matrix whose diagonal entries $a_{ii}$ satisfy $a_{ii}\ge 1$ for all $i$. Suppose also $\sum_{i\ne j} a_{ij} < 1$. Prove that the inverse matrix $A^{-1}$ exists.
+\end{bbox}
+\begin{solution}
+    I gave myself the hint that I can use proof by contradiction since the statement is boolean.
+    \begin{enumerate}
+        \item Suppose by contradiction that $A$ is not invertible. Then the kernel of $A$ is non-trivial. (I did this step correctly). 
+        \item We know that the diagonal entries are all greater than $1$ and the sum of all non-diagonal entries is less than $1$.
+        \item This means that there exists $\vec v \ne \vec 0$ such that $A\vec v = \vec 0$ and assume that $\|\vec v\| = 1$. Then
+        \begin{align*}
+            &\sum_{j=1}^n a_{ij} v_j  =0\\
+            &\implies a_{ii}v_{i} = -\sum_{j:j\ne i}a_{ij} v_j\\
+            &\implies \sum_{i=1}^n a_{ii}^2 v_i^2 = \sum_{i=1}^n (\sum_{j:j\neq i}a_{ij}v_j)^2\\
+        \end{align*}
+        \item However, \[
+        \sum_{i=1}^n a_{ii}^2 v_i^2\ge 1
+        \]
+        but 
+        \begin{align*}
+        &\sum_{i=1}^n(\sum_{j:j\ne i}a_{ij}v_j)^2 \le \sum_{i=1}^n \sum_{j:j\ne i}(a_{ij}^2) \sum_{j:j\ne i}(v_j)^2 = \sum_{i=1}^n \sum_{j: j\ne i} a_{ij}^2 < 1
+        \end{align*}
+    \end{enumerate}
+\end{solution}
+\begin{bbox}{Greshgorin Circle Problem}
+    Let $A\in \mathbb C^{n\times n}$ with entries $a_{ij}$. Let \[
+    R_i := \sum_{j\neq i} |a_{ij}|
+    \]
+    Let $D(a_{ii}, R_i)$ be a closed disc centered at $a_{ii}$ with radius $R_{i}$, called the Greshgorin disc. Show that every eigenvalue of $A$ lies at least in one of the Goshgorin discs of $A$.
+    \end{bbox}
+    \begin{solution}
+        This appears to be a hard and interesting problem. My first intuition is proof by contradiction.
+        \begin{enumerate}
+            \item Suppose there exists $\lambda$ (with eigenvector $\vec v$) that doesn't lie in any Goshgorin disc: for all $i$
+            \[
+            |\lambda - a_{ii}| > R_i = \sum_{j\ne i} |a_{ij}|
+            \]
+            \item We need to reach a contradiction out of this. Let me try considering eigen vectors $\vec v$ such that the absolute value of the entries is upper bounded by $1$. Then 
+            \begin{align*}
+                &A v = \lambda v \\
+                &\sum_{j=1}^n a_{ij}v_j=\lambda v_i\\
+                &\sum_{j:j\ne i}a_{ij}v_j + a_{ii}v_i  = \lambda v_i\\
+            \end{align*}
+            Then we get 
+            \[
+            \sum_{j:j\neq i}|a_{ij}| \ge |\sum_{j:j\ne i}a_{ij}| = |v_i(\lambda-a_{ii})| = |\lambda-a_{ii}|
+            \]
+            which is a contradiction.
+        \end{enumerate}
+    \end{solution}
+    
 \end{document}
