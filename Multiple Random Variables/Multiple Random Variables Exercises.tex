@@ -1,0 +1,44 @@
+\documentclass[../main]{subfiles}
+\begin{document}
+\chapter{Multiple Random Variables Exercises}
+\section{Core Competency Exam Questions}
+\begin{bbox}{Summer 2018 Practice \# 12}
+Suppose that $U_1,U_2 \overset{iid}{\sim}U(0,1)$. Let $V_1 = \max (U_1, U_2)$ and $V_2 = \min(U_1, U_2)$.
+\begin{itemize}
+    \item Find \[
+    \Pr[V_1 \ge x, V_2 \le y]
+    \] where $x,y\in[0,1]$.
+    \item Hence or otherwise find the joint density for $(V_1, V_2)$
+    \item Hence or otherwise compute $\mathbb E(V_1^2 + V_2^2)$
+\end{itemize}
+
+\end{bbox}
+\begin{solution}
+    \begin{itemize}
+        \item Let's use de Morgan's law to decompose the event:
+        \begin{align*}
+            P(V_1 \geq x, V_2 \leq y) &= P(U_1 \ge x, U_2 \le y  \quad ||\quad  U_1 \leq y, U_2 \ge x)\\
+            &=P(U_1 \ge x, U_2\le y) + P(U_1 \leq y, U_2 \ge x) - P(x\le U_1 \le y, \quad x\le U_2\le y)\\
+            &= \begin{cases}
+                2y-y^2-x^2 \quad \text{if $x\leq y$}\\
+                2y-2xy \quad \text{otherwise}
+            \end{cases}
+        \end{align*}
+    \end{itemize}
+    To find the joint density, we take derivative of 
+    \begin{align*}
+        f(x,y)=&\frac{\partial^2 P(V_1 < x, V_2 < y)}{\partial x\partial y} = \frac{\partial^2}{\partial x\partial y} P(V_1< x) - P(V_1 < x, V_2>y)\\
+        % \frac{\partial^2}{\partial x\partial y} P(U_1 < y || U_2 < y) = \frac{\partial^2}{\partial x\partial y}\left[P(U_1 < y) + P(U_2 < y)-P(U_1<y \quad \& \quad U_2<y)\right]\\
+        % &=\frac{\partial^2}{\partial x\partial y} \left(y + y - y^2\right)\\
+        &= \frac{\partial^2}{\partial x\partial y} \begin{cases}
+            x^2 - (x-y)^2 \quad \text{if $y\in[0,1]$ and $x\ge y$}\\
+            x^2 \quad \text{otherwise}
+        \end{cases}\\
+        x^2 
+        &= \begin{cases}
+            2 \quad \text{if $y\in[0,1]$ and $x\ge y$}\\
+            0 \quad \text{otherwise}
+        \end{cases} 
+    \end{align*}
+\end{solution}
+\end{document}
