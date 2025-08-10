@@ -463,4 +463,205 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
         \end{enumerate}
     \end{solution}
     
+\begin{bbox}{Limit of $A^n$}
+    Let $A = \begin{bmatrix}
+        1 & 0 & 0\\
+        1/2 & 1/2 & 0\\
+        1/3 & 1/3 & 1/3
+    \end{bmatrix}$. Find $\lim_{n\to \infty} A^n$. Hint: the eigenvalues of a lower triangular matrix are its diagonal entries.
+\end{bbox}
+\begin{solution}
+    This is a typical diagonalization problem. From the hint, we know that the eigenvalues are $1$, $1/2$, and $1/3$. 
+    \begin{itemize}
+        \item Solving $\begin{bmatrix}
+            1 & 0 & 0\\
+        1/2 & 1/2 & 0\\
+        1/3 & 1/3 & 1/3
+        \end{bmatrix} \begin{bmatrix}
+             x_1  \\ x_2 \\ x_3
+        \end{bmatrix} = \begin{bmatrix}
+             x_1  \\ x_2 \\ x_3
+        \end{bmatrix}$, We get that $\frac{1}{2}x_1 + \frac{1}{2}x_2 =x_2\implies x_1 = x_2$. From the last equation, we know that $x_1=x_2=x_3$. An eigenvector is just $\begin{bmatrix}
+            1\\1\\1
+        \end{bmatrix}$
+        \item Solving $\begin{bmatrix}
+            1 & 0 & 0\\
+        1/2 & 1/2 & 0\\
+        1/3 & 1/3 & 1/3
+        \end{bmatrix} \begin{bmatrix}
+             x_1  \\ x_2 \\ x_3
+        \end{bmatrix} = \frac{1}{2}\begin{bmatrix}
+             x_1  \\ x_2 \\ x_3
+        \end{bmatrix}$
+    \end{itemize}
+\end{solution}
+\begin{bbox}{$AB$ and $BA$ have the same eigenvalues}
+    Show that $AB$ and $BA$ have the same eigenvalues if $A$ is invertible.
+\end{bbox}
+\begin{solution}
+    The proof is quite short. Let $\lambda$ be an eigenvalue of $AB$ and $\vec v_i$ be corresponding eigenvectors. Then 
+    \begin{align*}
+        AB \vec v &= \lambda \vec v\\
+        \implies B\vec v &= \lambda A^{-1}\vec v\\
+        \implies B A (A^{-1}\vec v) &= B\vec v = \lambda (A^{-1}\vec v)
+    \end{align*}
+    This shows that $\lambda$ is an eigenvalue of $BA$ with the same multiplicity since $A^{-1}$ is also an invertible linear transformation.
+    \newline
+    An alternative solution shows that $AB$ and $BA$ share the same characteristic polynomial:
+    \[
+    \det(AB - \lambda I) = \det(A^{-1}A(AB-\lambda I)) = \det(A^{-1}(AB-\lambda I)A) = \det(BA-\lambda I)
+    \]
+\end{solution}
+\begin{bbox}{Invertibility Exercise}
+    Let $A = (a_{ij})$ be a $2\times 2$ real matrix such that 
+    \[
+    a_{11}^2 + a_{12}^2 + a_{21}^2 + a_{22}^2 < \frac{1}{1000}
+    \]
+    Show that $I + A$ is invertible.
+\end{bbox}
+\begin{solution}
+    My intuition is to look at the determinant of $I + A$ since the determinant of a two by two matrix is very easy to compute.
+    \begin{align*}
+    \det(I+A) &= (1+a_{11})(1+a_{22})-a_{12}a_{21}\\
+    &=1 + a_{11}+ a_{22}+a_{11}a_{22}-a_{12}a_{21}
+    \end{align*}
+    One thing we can do is to use the fact that $|a_{ij}|\leq \frac{1}{\sqrt{1000}}\le \frac{1}{10}$. The statement in the problem is true even if \[
+     a_{11}^2 + a_{12}^2 + a_{21}^2 + a_{22}^2 < 1
+    \]
+    \newline
+    An alternative solution: Suppose by contradiction that $I+A$ has a non-trivial kernel, i.e. there exists $\vec v$ such that $(I+A)\vec v = 0$. Then 
+    \[
+    \begin{cases}
+        v_1 + a_{11} v_1 + a_{12}v_2 = 0\\
+        a_{21}v_1 + v_2 + a_{22}v_2 = 0
+    \end{cases}
+    \]
+    The next key step is to look at the norm of $\vec v$, which is 
+    \[
+    \|\vec v\|^2_2 = (a_{11}v_1 + a_{12}v_2)^2 +(a_{21}v_1 + a_{22}v_2)^2 \leq (a_{11}^2 + a_{12}^2 + a_{21}^2 + a_{22}^2)(v_{11}^2 + v_{22}^2) < \frac{1}{1000}\|\vec v\|_2^2
+    \]
+    The first inequality is true because 
+    \[
+    (ax+by)^2 \leq (a^2+b^2)(x^2+y^2)
+    \]
+    Note that this is actually Cauchy schwarz.
+\end{solution}
+\begin{bbox}{Eigenvalue and Optimization Exercise}
+    Let $A\in \mathbb R^{n\times n}$ real symmetric matrix and let $\lambda_1\ge \dots \ge \lambda_n$ be its eigenvalues in descending order. Show that 
+    \[
+    \lambda_k \le \max_{U: \dim(U) = k}\min_{x\in U: \|x\|_2 = 1} \langle Ax, x\rangle
+    \]
+    The maximum above is over all $k$-dimensional subspaces $U$ of $\mathbb R^n$. Hint: form an orthonormal basis of eigenvectors to make $U$.
+\end{bbox}
+\begin{solution}
+    Following the solution, let $\{\vec v_i\}$ be an orthonormal basis of eigenvectors of $U$, corresponding to the eigenvalues $\lambda_i$. The existence of such basis is by the Spectral Theorem.
+    Let $U$ be the direct sum of the first $K$ eigenspaces. For any $x\in U$, $x = \sum_{i=1}^k a_i v_i$.
+    Let $\|x\|_2 = 1$. Then 
+    \[
+    \langle Ax, x\rangle = \langle \sum^k_{i=1} a_i \lambda_i v_i, \sum_{i=1}^k a_i v_i\rangle = \sum_{i=1}^k \lambda_i a_i^2 \ge \sum_{i=1}^k a_i^2\lambda_k = \lambda_k
+    \]
+\end{solution}
+\begin{bbox}{Projection Exercise}
+    For a vector $\vec v \in \mathbb R^n \backslash \{0\}$, define the map $F: \mathbb R^n \to \mathbb R^n$ by 
+    \[
+    F(x) = \argmin_{z\in \text{Span}(\vec v)}\|z-x\|_2. 
+    \]
+    Compute $F$ explicitly in terms of $\vec v$. Is $F: \mathbb R^n \to \mathbb R^n$ a linear transformation?
+\end{bbox}
+\begin{solution}
+    \begin{align*}
+        F(x) &= \argmin_{a}\|a\vec v - \vec x\|_2
+    \end{align*}
+    We want to minimize the distance between $a\vec v$ and $\vec x$. We should just project $x$ onto the Span of $\vec v$ and $F$ should return
+    \[
+    F(x) = \frac{v^Tx}{\|v\|_2\|x\|_2} \|x\|_2\frac{\vec v}{\|v\|_2} = \frac{v^T x}{\|v\|_2^2}v
+    \]
+    This is apparently a linear transformation because projection is linear.
+    \newline
+    Some words on simplification:
+    \[
+    v^T x v = v(v^T x)=(vv^T)x
+    \] since scalar-vector multiplication is commutative.
+\end{solution}
+\begin{bbox}{(Straightforward)Square Root of a Symmetric Matrix}
+    Suppose $A \in \mathbb R^{n\times n}$ and $A=A^T$ with all eigenvalues of $A$ being positive. Show there exists a matrix $B$ such that $B^2 = A$.
+\end{bbox}
+\begin{solution}
+    $A=A^T$ means that $A$ is symmetric, then by the spectral theorem, $A$ can be diagonalized into 
+    \[
+    Q \Lambda Q^T
+    \]
+    where the digonal of $\Lambda$ consists of the eigenvalues of $A$, which are all posiitive and thus we can take square roots of them. Therefore, let $\sqrt{\Lambda}$ denote the diagonal matrix with the square root of the eigenvalues of $A$ on the diagonal. Since the square of a diagonal matrix can be obtained by squaring the diagonal entries, we see that $\sqrt{A}^2 = A$. We can define the matrix $B$ as $Q\sqrt{\Lambda}Q^T$ and 
+    \[
+    B^2 = Q\sqrt{\Lambda}Q^TQ\sqrt{\Lambda}Q^T = Q\Lambda Q^T = A
+    \]
+\end{solution}
+\begin{bbox}{$|\det|$ is equal to product of singular values}
+    Let $A\in \mathbb R^{n\times n}$ and let $\{\sigma_i\}_{i=1}^n$ be the singular values of $A$. Show that $|\det(A)| = \prod_{i=1}^n \sigma_i$ 
+\end{bbox}
+\begin{solution}
+    Don't work with characteristic polynomial for this one. We should definitely consider the SVD of $A$ which is of the form
+    \[
+    A = U\Sigma V^T
+    \]
+    where $U$ and $V^T$ are orthonormal matrices. Then
+    \[
+    \det A = \det(U\Sigma V^T) = \det U \det \Sigma \det V^T = \pm \det (\Sigma)
+    \]
+    Note that the determinant of orthonormal matrices is either $+1$ or $-1$, since $\det (Q)\det(Q^T) = \det(I)$ and transposition does not change the determinant.
+\end{solution}
+\begin{bbox}{Low-Rank Matrix Approximation}
+    Let $A\in \mathbb R^{m \times n}$ and for a positive integer $p < rank(A)$, define $A_p = \sum_{i=1}^p \sigma_i u_i v_i^T$ where $\sigma_i$ is the $i$th largest singular value of $A$, and $u_i, v_i$ are respective left and right singular vectors, i.e. the SVD is $A = U\Sigma V^T$. Then prove
+    \[
+    \sup_{x:\|x\|_2 = 1} \|(A-A_p)x\|_2 = \sigma_{p+1}
+    \]
+\end{bbox}
+\begin{solution}
+    \begin{align*}
+        A-A_p &= \sum_{i=1}^n \sigma_i u_i v_i^T - \sum_{i=1}^p \sigma_i u_iv_i^T\\
+        &= \sum_{i=p+1}^n \sigma_iu_iv_i^T\\
+        \|(A-A_p)\vec x\|_2^2 &= \left(\sum_{i=p+1}^n \sigma_iu_iv_i^T \vec x \right)^T\left(\sum_{j=p+1}^n \sigma_ju_jv_j^T \vec x\right)\\
+        &=\left(\sum_{i=p+1}^n \sigma_i x^Tv_i u_i^T \right) \left(\sum_{j=p+1}^n \sigma_ju_jv_j^Tx\right)\\
+        &= \sum_{i=p+1}^n\sigma_i^2 x^T v_i u_i^T u_i v_i^T \vec x \quad \text{by orthonormality of $\vec u, \vec v$}\\
+        &= \sum_{i=p+1}^n \sigma_i^2 x^T v_i v_i^T x\\
+        &= \sum_{i=p+1}^n \sigma_i^2 (v_i^Tx)^2
+    \end{align*} 
+    Note that this is a convex combination of $\sigma_i^2$. To maximize it, we can let $\|v_{p+1}^Tx_{p+1}\|=1$
+    Alternatively, we can argue that $U^T(A-A_p) V = diag(0,\dots, 0,\sigma_{p+1},\dots)$. By orthgonal invariance of the $2$-norm, we have 
+    \[
+    \|(A-A_p)x\|_2 = \|U^T(A-A_p)Vx\|_2
+    \]
+    which is equal to the biggest singular value of $U^T(A-A_p)V$, i.e. $\sigma_{p+1}$. 
+\end{solution}
+
+\begin{bbox}{Eigenvalues of Symmetric Idempotent Matrix}
+    Suppose $P\in \mathbb R^{n\times n}$ symmetric matrix that satisfies $P^2 = P$, a so-called idempotent matrix. Find all the eigenvalues of $P$ with their algebraic multiplicities in terms of $P$.
+\end{bbox}
+\begin{solution}
+    Since $P$ is symmetric, we can decompose it into $Q \Lambda Q^T$ by the spectral theorem. Then we know that 
+    \[
+    P^2 = Q\Lambda Q^T Q \Lambda Q^T = \Lambda^2 = P
+    \]
+    Note that the eigenvalues of $P$ are either $1$ or $0$.
+    \newline
+    We can also consider an eigenpair $\lambda, \vec v$ of $P$, then 
+    \[
+    P\vec v = P^2 \vec v = \lambda\vec v = \lambda^2 \vec v.
+    \]
+    The eigenvalue $1$ of $P$ has multiplicity of $rank (\Lambda) = rank(P)$ since multiplication by an invertible matrix does not change the rank. Also, we then have that the multiplicity of the eigenvlue $\lambda=0$ is $n-rank(P)$.
+\end{solution}
+\begin{bbox}{Singular Covariance Matrix means Linearly Dependent a.s.}
+    Suppose that $\Sigma$ is the covariance matrix of $k$ zero-mean random variables $X_1,\dots, X_k$, i.e. if $X=(X_1, \dots, X_k)$, then $\Sigma:= \mathbb E[XX^T]$. Prove that if $\Sigma$ is singular, then $X_1,\dots, X_k$ are linearly dependent almost everywhere.
+\end{bbox}
+\begin{solution}
+    $\Sigma$ is a symemtric positive definite matrix. If $\Sigma$ is singular, then it has zero eigenvalue. Let's $\vec v$ be the corresponding eigenvector. Since $\Sigma \vec v=\vec 0$, $v^T \Sigma v = 0$. Then
+    \begin{align*}
+    &v^T \Sigma v = 0\implies v^T \mathbb E[XX^T]v=0\\
+    &\mathbb E[v^TXX^Tv] = 0\\
+    &= \mathbb E ((X^T v)^2) = 0
+    \end{align*}
+    $(X^Tq)^2$ is a non-negative random variable with mean zero, it must be zero almost surely for its expectation to be zero.
+    \newline
+    Another arguemnt we can use is that a random variable has variance zero iff it's almost surely constant.
+\end{solution}
 \end{document}
