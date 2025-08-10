@@ -2,6 +2,48 @@
 \begin{document}
 \chapter{Random Variables and Transformations}
 \section{Fundamentals}
+\subsection{PDF Transformation Law for Monotone Transformations}
+\begin{bbox}{2.1.5}
+    Let $X$ have pdf $f_X(x)$ and let $Y=g(X)$, where $g$ is a monotone function. Suppose that $f_X(x)$ is continuous on $\mathcal X$ and that $g^{-1}$ has a continuous derivative on $\mathcal Y$. Then the pdf of $Y$ is given by 
+    \[
+    f_Y(y) = \begin{cases}
+        f_X(g^{-1}(y))|\frac{\dd}{\dd y}g^{-1}(y)|\quad \text{if $y=g(x) \quad \text{for some $x\in \mathcal X$}\}$}\\
+        0 \quad \text{otherwise}
+    \end{cases}
+    \]
+\end{bbox}
+\begin{pbox}{Square Transformation}
+    Suppose $X$ is a continuous random variable. For $y>0$, the cdf of $Y=X^2$ is 
+    \[
+    F_Y(y) = \mathbb P(Y\le y) = \mathbb P(X^2 \le y) = \mathbb P(-\sqrt{y}\le X \le \sqrt{y}).
+    \]
+    By continuity, this is equal to 
+    \[
+    F_X(\sqrt{y}) - F_X(-\sqrt{y})
+    \]
+    whence differentiating gives us the pdf:
+    \[
+    f_Y(y) = \frac{1}{2\sqrt{y}}f_X(\sqrt{y})+\frac{1}{2\sqrt{y}}f_X(-\sqrt{y})
+    \]
+\end{pbox}
+\subsubsection{Normal-chi squared relationship}
+Let $X$ have the standard normal distribution,
+\begin{bbox}{General pdf Transformation Law}
+    Let $X$ have pdf $f_X(x)$ and let $Y=g(X)$. Suppose there exists a partition $\{A_i\}$ of $\mathcal X$ such that $\mathbb P(X\in A_0) = 0$ and $f_X(x)$ is continuous on each $A_i$. Furthermore, suppose there exist functions $\{g_i\}$ on $A_i$ such that 
+    \begin{enumerate}
+        \item $g(x) = g_i(x)$ on $A_i$
+        \item $g_i(x)$ is monotone on $A_i$.
+        \item The set $\mathcal Y = \{y: y=g_i(x) \quad  \text{for some $x\in A_i$}\}$ is the same for each $i=1,\dots,k$.
+        \item $g_i^{-1}(y)$ has a continuous derivative on $\mathcal Y$
+    \end{enumerate}
+    Then the pdf of $Y$ is given by 
+    \[
+    f_Y(y) = \sum_{i=1}^k f_X(g_i^{-1}(y)|\frac{\dd}{\dd y}g_i^{-1}(y))
+    \]
+\end{bbox}
+
+
+\section{Core Competency Exam Questions}
 \subsection{Median Minimizes the Absolute Error}
 \begin{bbox}{Median Minimizes the Absolute/$L^1$ Error}
     Let $X$ be a random variable. Show that the median of $X$ is the constant $a$ that minimizes $\mathbb E |X-a|$.
@@ -31,6 +73,7 @@
         \item By definition, the minimizer $a$ is the median of $X$.
     \end{enumerate}
 \end{solution}
+
 \subsection{A Tight Bound of Variance of Bounded Random Variables}
 \begin{bbox}{A Tight Bound of Variance of Bounded Random Variables}
 Let $X$ be a random variable taking values in the interval $[0,1]$. 
@@ -76,8 +119,6 @@ Let $X$ be a random variable taking values in the interval $[0,1]$.
     
     
 \end{solution}
-
-\section{Core Competency Exam Questions}
 \begin{bbox}{{2018 Summer Practice, \#14}}
     Suppose $f: [0,\infty) \to \mathbb R$ is a function such that $f(x+y) = f(x)f(y)$.
     \begin{itemize}
@@ -125,4 +166,7 @@ Let $X$ be a random variable taking values in the interval $[0,1]$.
         \item Suppose that $R$ is uniformly distributed on $[1,10]$. Find the probability density function of the volume $V$ of a ball (Recall that $V=\frac{4}{3}\pi R^3)$
     \end{enumerate}
 \end{bbox}
+
+
+
 \end{document}
