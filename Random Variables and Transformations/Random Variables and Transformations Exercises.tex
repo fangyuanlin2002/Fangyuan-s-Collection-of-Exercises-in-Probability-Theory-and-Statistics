@@ -3,7 +3,30 @@
 \chapter{Random Variables and Transformations}
 \section{Fundamentals}
 \subsection{PDF Transformation Law for Monotone Transformations}
-\begin{bbox}{2.1.5}
+
+\begin{bbox}{Theorem 2.1.3}
+    Let $X$ have cdf $F_X(x)$, let $Y = g(X)$,
+    \begin{itemize}
+        \item If $g$ is an increasing function, then $F_Y(y) = F_X(g^{-1}(y))$ for $y\in\mathcal Y$.
+        \item If $g$ is a decreasing function and $X$ is a continuous random variable, $F_Y(y) = 1-F_X(g^{-1}(y))$
+    \end{itemize}
+\end{bbox}
+\begin{pbox}{Uniform-Exponential Relationship Part 1}
+    Suppose $X\sim f_X(x) = 1$ for $0<x<1$. Let $Y=-\log(X)$.
+    \[
+    \frac{\dd}{\dd x}g(x) = -\frac{1}{x}
+    \]
+    which is decreasing on $[0,1]$. $-\log(x)$ ranges from $0$ to $\infty$ on this interval. Note that 
+    \[
+    g^{-1}(y) = e^{-y}.
+    \]
+    Therefore, 
+    \[
+    F_Y(y) = 1- F_X(e^{-y}) = 1-e^{-y}
+    \]
+    This is the exponential distribution.
+\end{pbox}
+\begin{bbox}{Theorem 2.1.5}
     Let $X$ have pdf $f_X(x)$ and let $Y=g(X)$, where $g$ is a monotone function. Suppose that $f_X(x)$ is continuous on $\mathcal X$ and that $g^{-1}$ has a continuous derivative on $\mathcal Y$. Then the pdf of $Y$ is given by 
     \[
     f_Y(y) = \begin{cases}
@@ -42,8 +65,299 @@ Let $X$ have the standard normal distribution,
     \]
 \end{bbox}
 
-
+\subsection{Expected Values}
+\begin{pbox}{Uniform-Exponential Relationship-II}
+    Let $X$ have a uniform (0,1) distribution. Define a new random variable $g(X) = -\log(X)$. Then
+    \[
+    \mathbb E g(X) = \mathbb E(-\log X) = \int_{0}^{1}-\log x \dd x= x - x\log x|_{0}^{1} = 1
+    \]
+    But we also saw that $Y=-\log X$ has cdf $1-e^{-y}$
+\end{pbox}
+\begin{pbox}{Cauchy Distribution does not have finite expected value}
+    Let $X$ be a Cauchy random variable, i.e. 
+    \[
+    f_X(x) = \frac{1}{\pi}\frac{1}{1+x^2}, \quad -\infty < x < \infty
+    \]
+    \begin{itemize}
+        \item \[
+        \int_{0}^{\infty}\frac{1}{1+x^2}\dd x =\arctan(\infty)-\arctan(0) = \frac{\pi}{2}
+        \]
+        so it's straighforward to check that this is a probability distribution.
+        \item However, the $\mathbb E|X| = \infty$.
+        \begin{align*}
+            &\mathbb E|X| = \int_{-\infty}^\infty \frac{|x|}{\pi}\frac{1}{1+x^2}\dd x\\
+            &=\frac{2}{\pi}\int_0^\infty \frac{x}{1+x^2}\dd x
+        \end{align*}
+        For any positive number $M$,
+        \[
+        \int_{0}^{M} \frac{x}{1+x^{2}} \, \mathrm{d}x 
+        = \left. \frac{\log(1+x^{2})}{2} \right|_{0}^{M} = \frac{\log(1+M^2)}{2}
+        \]
+        Then 
+        \[
+        \mathbb E|X| = \lim_{M\to\infty}\frac{1}{\pi}\log(1+M^2) = \infty.
+        \]
+    \end{itemize}
+\end{pbox}
+\subsection{Moment Generating Function}
+\begin{gbox}{Moment Generating Function}
+    The moment generating function of the random variable $X$ is 
+    \[
+    M_X(t) = \mathbb E \left[e^{Xt}\right]
+    \]
+    provided that the expectation exists for $t$ in some neighborhood of $0$.
+\end{gbox}
+\begin{bbox}{MGF generates the moments}
+    \[
+    \frac{\dd^n}{\dd t^n} M_X(t)|_{t=0} = \mathbb E[X^n]
+    \]
+\end{bbox}
+\subsubsection{Gamma Moment Generating Function}
+\begin{pbox}{Gamma Moment Generating Function}
+    Consider the gamma pdf 
+    \[
+    f(x) = \frac{1}{\Gamma(\alpha)\beta^\alpha}x^{\alpha-1}e^{-x/\beta}, \quad 0 < x <\infty, \alpha>0, \beta > 0
+    \]
+    where $\Gamma(\alpha)$ denotes the gamma function evaluated at $\alpha$. The mgf is then 
+    \[
+    M_X(t) = \frac{1}{\Gamma(\alpha)\beta^\alpha}\int_{0}^\infty e^{tx}x^{\alpha-1}e^{-x/\beta}\dd x = \frac{1}{\Gamma(\alpha)\beta^\alpha}\int_{0}^\infty x^{\alpha-1}e^{-x/(\frac{\beta}{1-\beta t})}\dd x
+    \]
+    Note that the integrand is the kernel (i.e. the part disregarding the normalizing constant) of another gamma pdf. Therefore, the integral, assuming it exists, evaluates to $\Gamma(\alpha)(\frac{\beta}{1-\beta t})^\alpha$. Then
+    \[
+    M_X(t) = \frac{1}{\Gamma(\alpha)\beta^\alpha}\Gamma(\alpha)\left(\frac{\beta}{1-\beta t}\right)^\alpha = \left(\frac{1}{1-\beta t}\right)^\alpha,
+    \] if $t < 1/\beta$. Otherwise, the integral diverges so to the mgf doesn't exist. As an application of the mgf, the mean of the gamma distribution can be found by
+    \[
+    \mathbb E [X] = \left. \frac{\dd}{\dd t}M_X(t)\right|_{t=0} = -\alpha (1-\beta t)^{-\alpha-1} \cdot (-\beta) = \alpha \beta.
+    \]
+\end{pbox}
 \section{Core Competency Exam Questions}
+
+\subsection{Problem 3}
+\begin{bbox}{3: 2018 Summer Practice \#9}
+    Suppose $X_1, X_2$ are i.i.d. random variables from a distribution $F$ with mean $0$ and variance $1$.
+    \begin{itemize}
+        \item If $F=N(0,1)$, show that 
+        \[
+        \frac{X_1 + X_2}{\sqrt{2}}\overset{d}{=} X_1
+        \]
+        \item If \[
+        \frac{X_1 + X_2}{\sqrt{2}}\overset{d}{=} X_1,
+        \]
+        show that $F=N(0,1)$.
+    \end{itemize}
+\end{bbox}
+\begin{solution}
+    For part $a$, we know that $X_1,X_2$ are independent standard normal variables. Therefore, their sum follows that $N(0+0, 1+1)$ distribution. By scaling the sum by $\sqrt{2}$, we get an $N(0,1)$ random variable.
+    \newline
+    For the other direction, we can use the fact that MGF characterizes distributions. 
+    \[
+        \frac{X_1 + X_2}{\sqrt{2}}\overset{d}{=} X_1,
+        \] means that 
+        \[
+        M_{\frac{X_1+X_2}{\sqrt{2}}}(t) = M_{X_1}(t).
+        \]
+        By independence, we know that 
+        \[
+        M_{\frac{X_1+X_2}{\sqrt{2}}} = M_{X_1}(\frac{1}{\sqrt{2}}t)M_{X_2}(\frac{1}{\sqrt{2}}t) = M_{X_1}(\sqrt{2}t)^2 = M_{X_1} 
+        \]
+        Next, the trick is to take log of the above functional equation!!
+\end{solution}
+\subsection{Problem 4}
+\begin{bbox}{4: 2018 Summer Practice \#14}
+    Suppose $f:[0,\infty)\to \mathbb R$ is a function such that $f(x+y)=f(x)f(y)$. \begin{itemize}
+        \item Show that $f9x)\ge 0$ for all real $x\ge 0$.
+        \item Show that $f(0)\in \{0,1\}$.
+        \item Show that for any nonnegative rational number $r$ one has $f(r) = c^r$ where $c\in [0,\infty)$
+        \item ...
+    \end{itemize}
+\end{bbox}
+\begin{solution}
+    An easy problem in my opinion.
+\end{solution}
+\subsection{Problem 5}
+\begin{bbox}{5: 2018 Summer \#15}
+    Suppose $X$ is a random variable taking values in $[0,1]$. \begin{itemize}
+        \item Show that $\Var(X)\le \frac{1}{4}$.
+        \item Find a random variable for which equality holds.
+    \end{itemize}
+\end{bbox}
+\begin{solution}
+    $1/4$ is a special number and is related to $\frac{1}{2}$. First note that $\mathbb EX$ is the best constant estimator in the MSE sense, so 
+    \[
+    \mathbb E[(X-\mathbb EX)^2] \le \mathbb E[(X-\frac{1}{2})^2]=\mathbb E[X^2]-\mathbb E[X] + \frac{1}{4} \le \frac{1}{4}
+    \]
+    since $X^2 \le X$. The Bernoulli rv that takes 0 with probability $0.5$ and 1 with probability $0.5$ achieves equality for this variance bound.
+\end{solution}
+\subsection{Problem 7}
+\begin{bbox}{7: 2018 September \# 4}
+    \begin{itemize}
+        \item Let $X$ be a random variable and $a\in\mathbb R$. Show that (using Markov's inequality or otherwise):
+        \[
+        \mathbb P[X\ge a] \le \inf_{s\ge 0} e^{-sa}\mathbb E[e^{sX}].
+        \]
+        \item Let $N$ be a Poisson random variable with parameter $\lambda > 0$, i.e. 
+        \[
+        \mathbb P[N=n] = e^{-\lambda}\frac{\lambda^n}{n},\quad n\ge 0
+        \]
+        Show that $\mathbb E[e^{sN} = e^{\lambda(e^s -1)}]$ for all $s\in \mathbb R$.
+        \item Let $N$ be as in ii and let $m\ge \lambda$ be an integer. Use i and ii to show that 
+        \[
+        P(N\ge m) \le (\frac{\lambda}{m})^m e^{m-\lambda}
+        \]
+    \end{itemize}
+\end{bbox}
+\
+\begin{solution}
+
+
+\begin{itemize}
+    \item By the Markov inequality, 
+    \[
+    P(X\ge a) = P(e^{sX} \le e^{sa}) \leq e^{-sa}\mathbb E[e^{sX}]
+    \]
+    for any positive $s$. Therefore,
+    \[
+        \mathbb P(X\ge a) \le e^{-sa}\mathbb E[e^{sX}]
+    \]
+    \item 
+    \begin{align*}
+        \mathbb E[e^{sN}] &= \sum_{n=0}^\infty e^{-sn}\,e^{-\lambda}\frac{\lambda^n}{n!}\\
+        &= e^{-\lambda}\sum_{n=0}^\infty e^{-sn}\frac{\lambda^n}{n!}\\
+        &= e^{-\lambda}\sum_{n=0}^\infty \frac{(e^{-s}\lambda)^n}{n!}\\
+        &= e^{-\lambda}e^{e^{-s}\lambda}\\
+        &= e^{\lambda(e^s - 1)}
+    \end{align*}
+    \item 
+    \[
+    P(N \ge m) \le \inf_{s\le 0} e^{-sm}e^{\lambda(e^s -1)}
+    \]
+    Let's find the minimizing $s$.
+    Letting the derivative be $0$, we get 
+    \[
+        -me^{-sm}e^{\lambda(e^s -1)}+e^{-sm} \lambda \, e^{s}e^{\lambda(e^s - 1)} = 0
+    \]
+    This simplifies to 
+    \[
+    \lambda e^s-m = 0 \iff e^{-s} = \frac{\lambda}{m}
+    \]
+    Therefore $\inf_{s\ge 0} e^{-sa}\mathbb E [e^{sX}] = \left(\frac{\lambda}{m}\right)^m e^{\lambda (\frac{m}{\lambda} -1)} = \left(\frac{\lambda}{m}\right)^m e^{m-\lambda}$.
+\end{itemize}
+\end{solution}
+\subsection{Problem 8}
+\begin{bbox}{2019 May \# 4}
+    We model the lifetime of a device as a random variable $T\ge 0$ with cdf $F(t)$ and density $f(t)$. Suppose that $f(t)$ is continuous for $t\ge 0$ and define the intensity of failure as 
+    \[
+    \lambda(t) = \lim_{h\downarrow0} \frac{P(t\le T \le t+h|T\ge t)}{h}, \quad \text{for $t\ge 0$.}
+    \]
+    \begin{itemize}
+        \item Express $\lambda(t)$ through $f(t)$ and $F(t)$.
+        \item Compute the intensity of failure when $T\sim \exp(\alpha),\alpha>0$.
+        \item Show that $F(t) = 1-\exp(-\int_{0}^{t}\lambda(s)\dd s)$ for $t\ge 0$.
+        \item Determine $F(t)$ and $f(t)$ in the case that $\lambda(t) = \alpha t^{\gamma}$ for some $\alpha>0$ and $\gamma > 0$.
+    \end{itemize}
+\end{bbox}
+\begin{solution}
+    For part a, let's just rewrite the expression from the definition using $f$ and $F$. 
+    \begin{align*}
+        P(t\le T\le t+h | T\ge t) &= \frac{F(t+h)-F(t)}{1-F(t)}\\
+        \lim_{h\downarrow 0} \frac{F(t+h)-F(t)}{h}&= f(t)
+    \end{align*}
+    Therefore 
+    \[
+    \lambda(t) = \frac{f(t)}{1-F(t) }
+    \]
+    For part b, 
+    \begin{align*}
+        \lambda(t) &= \frac{f(t)}{1-F(t)}\\
+        &= \frac{\alpha e^{-\alpha t}}{e^{-\alpha t}} \mathbf{1}_{t\ge 0}\\
+        &= \alpha \mathbf{1}_{t\ge 0}
+    \end{align*}
+    For part c, first of all
+    \[
+    \int_{0}^t \lambda(s)\dd s = \int_{0}^{t} \frac{f(s)}{1-F(s)}\dd s.
+    \]
+    Let $y=F(t)$, then $\frac{\dd y}{\dd t} = f(t)$ and thus $\dd y = f(t)\dd t$.\\
+    Now the above integral becomes 
+    \[
+    \int_{F(0)}^{F(t)}\frac{1}{1-y}\dd y = \left. \ln (1-y) \right |_{F(t)}^{F(0)} = -\ln (1-F(t))
+    \]
+    Now 
+    \[
+    1- \exp\{\ln(1-F(t))\} = 1 -1+F(t) = F(t).
+    \]
+    For part d, we should go from part c and compute $F(t)$. 
+    \begin{align*}
+        F(t) &= 1-\exp\{-\int_{0}^t\lambda(s)\dd s\}\\
+        \int_{0}^t\alpha s^{\gamma} \dd s &= \frac{\alpha}{\gamma + 1}t^{\gamma + 1}
+    \end{align*}
+    Then 
+    \[
+    F(t) = 1 - \exp\{-\frac{\alpha}{\gamma + 1} t^{\gamma + 1}\}
+    \]
+    Then by differentiating $F(t)$, we get 
+    \[
+    f(t) = -\exp\{-\frac{\alpha}{\gamma + 1}t^{\gamma + 1}\} (-\alpha t^\gamma)
+    \]
+\end{solution}
+\subsection{Problem 9}
+\begin{bbox}{2019 May \#5}
+    You are working as a TA in the help room for a duration $t$. The number of students arriving during that period is Poisson distributed with parameter $t\lambda$. For each student, the time $T$ to answer their questions is exponentially distributed with parameter $\alpha$ and this time is independent of all other students. Prove that the distribution of the number $X$ of students that arrive while you are busy with one fixed (randomly chosen) student is geometric with some parameter $p$ and determine $p$ in terms of $\alpha$ and $\lambda$.
+    \newline
+    Hint: The formula
+    \[
+    \int_{0}^\infty s^k e^{-s} \dd s = s!
+    \] for $k=0,1,2,\dots$ can be used without proof.
+\end{bbox}
+\begin{solution}
+    This problem is all about computing integral. 
+    \begin{itemize}
+        \item First of all, we know
+        \[
+        \mathbb P(X=k|T=t) \sim \text{Poisson}(\lambda t)
+        \]
+        \item Now
+        \[
+        P(X=n)=\int_{0}^\infty P(X=n|T=t)f(t) \dd t
+        \]
+        \item 
+        \begin{align*}
+            P(X=n)&=\int_{0}^\infty \frac{e^{-t\lambda}(t\lambda)^n}{n!} \alpha e^{-\alpha t} \dd t\\
+            &=\frac{\alpha}{n!}\frac{1}{\alpha+\lambda}\int_{0}^\infty e^{-s}\left(\frac{\lambda}{\alpha+\lambda}s\right)^n \dd s\\
+            &= \frac{\alpha \lambda^n}{(\alpha+\lambda)^{n+1}}
+        \end{align*}
+        This is a geometric random variable with parameter $p = \frac{\lambda}{\alpha+\lambda}$
+    \end{itemize}
+\end{solution}
+\subsection{Problem 10}
+\begin{bbox}{2019 May \# 7}
+    Suppose you have $n$ red balls and one blue ball. We will do two experiments. In the first experiment, you first drop $n$ red balls uniformly on the interval $[0,1]$, independent of each other. Having done this, now you drop the blue ball uniformly in the interval, independent of all previous ball drops. Let $X$ denote the number of red balls to the left of the blue ball. Find $P(X=k)$, for $k=0,...,n$.
+    \newline
+    In the second, experiment, you drop all the $(n+1)$ balls uniformly on $[0,1]$, independent of each other. Let $Y$ denote the number of red balls to the left of the blue ball as before. Find $\mathbb P(Y=k).$
+\end{bbox}
+\begin{solution}
+    Let $R_1,\dots, R_n$ be the positions of the red balls, which are i.i.d. Uniform(0,1). Let $B$ be the position of the blue ball. Let 
+    \[
+    X = \mathbf{1}_{B\le U_1} + \dots + \mathbf{1}_{B\le U_n}.
+    \]
+    Given $B=b$, $X$ is a binomial(b, n) random variables. Then
+    \[
+    P(X=k) = \int_{0}^1 \binom{n}{k}b^{k}(1-b)^{n-k}\dd b = \binom{n}{k} \beta(k+1, n-k+1)
+    \]
+    This simplifies to
+    \[
+    \frac{n!}{k!(n-k)!}\frac{k!(n-k)!}{(n+1)!} = \frac{1}{n+1}.
+    \]
+    This is my original and somewhat canonical idea, which differs from the official solution:
+    \[
+    P(X=k)=\mathbb E_{U_1,\dots,U_n}[P(X=k|U_1,\dots, U_n)] = \mathbb E[U_{(k+1)}-U_{(k)}] = \frac{k+1}{n+1}-\frac{k}{n+1} = \frac{1}{n+1}.
+    \]
+    For this to work, we need to know that the order statistics $U_{(k)} \sim \text{Beta}(k, n-k+1)$.
+\end{solution}
+\subsection{Problem 11}
+\begin{bbox}
+    Suppose that $X$ is a non-negative random variable. Show that
+\end{bbox}
+\section{Supplementary Questions}
 \subsection{Median Minimizes the Absolute Error}
 \begin{bbox}{Median Minimizes the Absolute/$L^1$ Error}
     Let $X$ be a random variable. Show that the median of $X$ is the constant $a$ that minimizes $\mathbb E |X-a|$.
@@ -116,56 +430,8 @@ Let $X$ be a random variable taking values in the interval $[0,1]$.
         1 \quad \text{w.p. $1$} 
     \end{cases}.
     \]
-    
-    
 \end{solution}
-\begin{bbox}{{2018 Summer Practice, \#14}}
-    Suppose $f: [0,\infty) \to \mathbb R$ is a function such that $f(x+y) = f(x)f(y)$.
-    \begin{itemize}
-        \item Show that $f(x)\geq 0$ for all real $x \geq 0$.
-        \item Show that $f(0) \in \{0,1\}$.
-        \item Show that for any nonnegative rational number $r$ one has $f(r)=c^r$, where $c\in[0,\infty)$.
-        \item Suppose $X$ is a non-negative random variable such that 
-        \[
-        P(X > s+t) = P(X>s) P(X>t)
-        \] for every $s,t \geq 0$. If $X$ has a continuous distribution function, name the distribution of $X$.
-    \end{itemize}
-\end{bbox}
-\begin{solution}
-    First of all, this just looks like the exponential function.
-    \begin{itemize}
-        \item \[
-        f(x) = f(\frac{x}{2} + \frac{x}{2}) = f(\frac{x}{2})^2 \geq 0
-        \]
-        \item \[
-        f(0) = f(0)^2 \implies f(0) \in \{0,1\}
-        \
-        \]
-        \item First of all, we can use proof by induction to show that $f(n) = c^n$ for $n\in \mathbb N$. by letting $c = f(1)$.
-        \newline
-        $r$ is nonnegative rational number so $r=\frac{p}{q}$ where $p,q$ are positive integers. Note \[
-        f(1) = f\left(\frac{1}{q} * q\right) =f\left(\frac{1}{q}\right)^q \implies f\left(\frac{1}{q}\right) = c^{\frac{1}{q}} 
-        \]
-        This then implies \[
-        f\left(\frac{p}{q}\right) = c^{\frac{p}{q}}
-        \]
-        Comment: Thank god I'm at least able to solve this problem single-handedly.
-        \item The set of rational numbers is dense in $\mathbb R$. I hope the reader understands what this means.
-        \item This is apparently the exponential distribution.
-        \newline
-        Let $f(x) = 1 - F(x)$ where $F(x)$ is the cdf of $X$. Then 
-        \[
-        f(s+t) = f(s)f(t)
-        \]
-        By the previous parts, $f(\cdot)$ is the exponential function, which characterizes the exponential function.
-    \end{itemize}
-\end{solution}
-\begin{bbox}{2018 September \#2}
-    We consider balls of random radius $R$.
-    \begin{enumerate}
-        \item Suppose that $R$ is uniformly distributed on $[1,10]$. Find the probability density function of the volume $V$ of a ball (Recall that $V=\frac{4}{3}\pi R^3)$
-    \end{enumerate}
-\end{bbox}
+
 
 
 

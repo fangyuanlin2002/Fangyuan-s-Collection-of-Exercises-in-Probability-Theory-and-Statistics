@@ -1,7 +1,8 @@
 \documentclass[../main]{subfiles}
 \begin{document}
 \chapter{Linear Algebra}
-\section{Eigenvalue and Eigenvector}
+\section{Fundamentals}
+\subsection{Eigenvalue and Eigenvector}
 \begin{bbox}{The eigenvalues of $A^2$}
     If $A$ has eigenvalues $\lambda_i$. Then the eigenvalues of $A^2$ are $\lambda_i^2$.
     \begin{proof}
@@ -22,7 +23,7 @@
     \end{proof}
 \end{bbox}
 
-\section{Orthogonality}
+\subsection{Orthogonality}
 Orthogonal Matrices have the following properties:
 \begin{itemize}
     \item $U^{-1}=U^T$
@@ -32,7 +33,7 @@ Orthogonal Matrices have the following properties:
     \item Rigit rotation, reflection, rotoreflection.
 \end{itemize}
 
-\section{Singular Value Decomposition}
+\subsection{Singular Value Decomposition}
 The Principal Component Analysis PCA is a byproduct of SVD. Let $X$ denote the original data matrix. Let $X^*$ be the (column-)centered matrix. (In machine learning, each row represents a data point and each column represents a feature). Let $\hat X$ denote the centered, normalized matrix.
 \begin{itemize}
     \item $X^{*T}X^*$ is the covariance matrix.
@@ -105,8 +106,8 @@ Consider an $n\times d$ matrix $A$
         \end{bmatrix}$
     \end{itemize}
 \end{pbox}
-\section{Determinant}
-\subsection{The Determinant is the Product of Eigenvalues}
+\subsection{Determinant}
+\subsubsection{The Determinant is the Product of Eigenvalues}
 \begin{proof}
     Let $A$ be a matrix with eigenvalues $\lambda_i$. The key idea of the proof uses the characteristic polynomial.
     \begin{enumerate}
@@ -133,8 +134,8 @@ Consider an $n\times d$ matrix $A$
         \]
     \end{enumerate}
 \end{proof}
-\section{Trace}
-\subsection{Trace is Equal to the Sum of Eigenvalues}
+\subsection{Trace}
+\subsubsection{Trace is Equal to the Sum of Eigenvalues}
 \begin{bbox}{Trace is Equal to the Sum of Eigenvalues}
     Let $A$ be an $n\times n$ matrix with eigenvalues $\lambda_i$. Show that 
     \[
@@ -146,7 +147,7 @@ Consider an $n\times d$ matrix $A$
         \item The proof is similar to that of "the determinant is product of eigenvalues," i.e. we work with the characteristic polynomial. \textcolor{red}{TO BE FILLED IN} 
     \end{enumerate}
 \end{solution}
-\subsection{An Inequality relating Trace and Determinant}
+\subsubsection{An Inequality relating Trace and Determinant}
 \begin{bbox}{{2018 Summer Practice Problem, \# 18}}
 Suppose $\Sigma$ is a non-negative definite matrix of $n\times n$ real entries and real eigenvalues. Show that 
 \[
@@ -166,7 +167,8 @@ Suppose $\Sigma$ is a non-negative definite matrix of $n\times n$ real entries a
     \end{enumerate}
 \end{solution}
 \section{Core Competency Exam Questions}
-\begin{bbox}{{2020 September Exam, \#8}}
+\subsection{Problem 1}
+\begin{bbox}{{1: 2020 September Exam, \#8}}
     For every $n\geq 1$, let $A_n$ be an $n\times n$ symmetric matrix with non-negative entries. Let $R_n(i):= \sum_{j=1}^n A_n(i,j)$ denote the ith row/column sum of $A_n$. Assume that 
     \[
     \lim_{n\to \infty} \max_{1\leq i \leq n} |R_n(i) - 1| = 0.
@@ -219,7 +221,8 @@ Suppose $\Sigma$ is a non-negative definite matrix of $n\times n$ real entries a
         \lambda_n \leq &\frac{x_k}{x_k} R_n(k) \to 1
     \end{align*}
 \end{solution}
-\begin{bbox}{(Straightforward) {2021 May Exam, \#7}}
+\subsection{Problem 2}
+\begin{bbox}{2: (Straightforward) {2021 May Exam, \#7}}
     Suppose that $A=(a_{ij})_{1\le i,j \le 2}$ is a $2\times 2$ symmetric matrix, with $a_{11} = a_{22} =\frac{3}{4}$ and $a_{12} = a_{21} = \frac{1}{4}$. 
     \begin{itemize}
         \item Find the eigenvalues and eigenvectors of the matrix $A$.
@@ -277,14 +280,16 @@ Suppose $\Sigma$ is a non-negative definite matrix of $n\times n$ real entries a
     \end{align*}
     This question is straightforward in my opinion!
 \end{solution}
-\begin{bbox}{{2021 Sept Exam, \#6}}
+\subsection{Problem 3}
+\begin{bbox}{{3: 2021 Sept Exam, \#6}}
 Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose that $\lambda_1,\lambda_2,\dots, \lambda_n$ and $\vec v_1,\dots, \vec v_n$ are the eigenvalues and eigenvectors of $A^TA$. What can we say about ALL the eigenvalues and eigenvectors of $AA^T$. Justify your answer.
 \end{bbox}
 \begin{solution}
     When it comes $AA^T$, especially when $A$ is non-symmetric or even non-square, we should think of Singular Value Decomposition SVD! Let $A = U \Sigma V^{-1}$ be its SVD. Then $A^T = V \Sigma^{T} U^{-1}$.
     The singular values of $A$ are the square root of the eigenvalues of $AA^T$, and we see that $A$ and $A^T$ share the same singular values. Note that $U$ is composed of orthonormal eigenvectors of $AA^T$ and $V$ is composed of orthonormal eigenvectors of $A^TA$. $AA^T \vec v_i = \lambda \vec v_i $
 \end{solution}
-\begin{bbox}{Eigenvalue of Orthogonal Matrix}
+\subsection{Problem 4}
+\begin{bbox}{4: Eigenvalue of Orthogonal Matrix}
     Let $A$ be a $3\times 3$ real-valued matrix such that $A^T A = AA^T = I_3$ and $\det (A) = 1$. Prove that $1$ is an eigenvalue of $A$.
 \end{bbox}
 \begin{solution}
@@ -299,7 +304,8 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     \newline
     The determinant is the product of the eigenvalues and $-1$ cannot be the only eigenvalue of $A$ because $(-1)^3 = -1 \neq 1 = \det A$.
 \end{solution}
-\begin{bbox}{(Straightforward) Trace of the square of a symmetric matrix is zero means zero matrix}
+\subsection{Problem 5}
+\begin{bbox}{5: (Straightforward) Trace of the square of a symmetric matrix is zero means zero matrix}
     Let $A$ be an $n\times n$ symmetric matrix such that $\Tr(A^2) = 0$. Show that $A = 0_{n\times n}$.
     \newline
     Hint: Use the fact that $\Tr(ABC) = \Tr(CAB)$.
@@ -311,8 +317,8 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     \]
     The trace is equal to the sum of the eigenvalues (to be honest, with this fact, we don't really need the hint), i.e. the diagonal of $\Lambda^2$ is zero. Since the entries of $\Lambda^2$ are non-zero, $\Lambda^2 = 0$ and hence $\Lambda = 0$. Therefore $A=0$.
 \end{solution}
-
-\begin{bbox}{Eigenvectors are the same iff Multiplication commutes}
+\subsection{Problem 6}
+\begin{bbox}{6: Eigenvectors are the same iff Multiplication commutes}
     Let $A,B\in \mathbb R^{n\times n}$ have respective eigendecompositions $Q_1 D_1Q_1^T$ and $Q_2 D_2 Q_2^T$ (recall this means each $D_i$ is a diagonal matrix of eigenvalues and each $Q_i$ is an orthogonal matrix). Prove that $Q_1 = Q_2$ if and only if $AB = BA$. You may assume that $A, B$ do not have any repeated eigenvalues.
 \end{bbox}
 \begin{solution}
@@ -330,7 +336,8 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     AB = Q_1 D_1 Q_1^T Q_2 D_2 Q_2^T = Q_2 D_2 Q_2^TQ_1 D_1 Q_1^T = BA
     \]
 \end{solution}
-\begin{bbox}{(Straightforward) Eigenvalue of $uv^T$}
+\subsection{Problem 7}
+\begin{bbox}{7: (Straightforward) Eigenvalue of $uv^T$}
     Let $A = uv^T \in \mathbb R^{n\times n}$ be a rank-one matrix, i.e. $u, v \in \mathbb R^n$. Suppose $u,v \neq 0_n$. Find, with proof, all the eigenvalues of $A$.
 \end{bbox}
 \begin{solution}
@@ -354,6 +361,8 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     \newline
     Comment: Should find this problem straightforward.
 \end{solution}
+
+\subsection{Problem 8}
 \begin{bbox}{Heisenberg Uncertainty Principle}
     Suppose $A, B \in \mathbb R^{n\times n}$ are symmetric matrices satisfying $AB + BA = Id$. Show that for all vectors $v\in \mathbb R^n\backslash\{0_n\}$,
     \[
@@ -413,7 +422,10 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
         \newline
         Comment: This teaches us a lesson that whenever we see the $2$-norm, consider playing with $v^Tv$. I was too obsessed with eigenvalues...
 \end{solution} 
-\begin{bbox}{Invertibility }
+
+\subsection{Problem 9}
+
+\begin{bbox}{Invertibility}
     Let $A=(a_{ij})$ be an $n\times n$ real matrix whose diagonal entries $a_{ii}$ satisfy $a_{ii}\ge 1$ for all $i$. Suppose also $\sum_{i\ne j} a_{ij} < 1$. Prove that the inverse matrix $A^{-1}$ exists.
 \end{bbox}
 \begin{solution}
@@ -436,7 +448,10 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
         \end{align*}
     \end{enumerate}
 \end{solution}
-\begin{bbox}{Greshgorin Circle Problem}
+
+\subsection{Problem 10}
+
+\begin{bbox}{9: Greshgorin Circle Problem}
     Let $A\in \mathbb C^{n\times n}$ with entries $a_{ij}$. Let \[
     R_i := \sum_{j\neq i} |a_{ij}|
     \]
@@ -462,8 +477,10 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
             which is a contradiction.
         \end{enumerate}
     \end{solution}
-    
-\begin{bbox}{Limit of $A^n$}
+
+\subsection{Problem 11}
+
+\begin{bbox}{10: Limit of $A^n$}
     Let $A = \begin{bmatrix}
         1 & 0 & 0\\
         1/2 & 1/2 & 0\\
@@ -495,7 +512,10 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
         \end{bmatrix}$
     \end{itemize}
 \end{solution}
-\begin{bbox}{$AB$ and $BA$ have the same eigenvalues}
+
+
+\subsection{Problem 12}
+\begin{bbox}{11: $AB$ and $BA$ have the same eigenvalues}
     Show that $AB$ and $BA$ have the same eigenvalues if $A$ is invertible.
 \end{bbox}
 \begin{solution}
@@ -512,6 +532,9 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     \det(AB - \lambda I) = \det(A^{-1}A(AB-\lambda I)) = \det(A^{-1}(AB-\lambda I)A) = \det(BA-\lambda I)
     \]
 \end{solution}
+
+\subsection{Problem 13}
+
 \begin{bbox}{Invertibility Exercise}
     Let $A = (a_{ij})$ be a $2\times 2$ real matrix such that 
     \[
@@ -546,7 +569,10 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     \]
     Note that this is actually Cauchy schwarz.
 \end{solution}
-\begin{bbox}{Eigenvalue and Optimization Exercise}
+
+\subsection{Problem 14}
+
+\begin{bbox}{12: Eigenvalue and Optimization Exercise}
     Let $A\in \mathbb R^{n\times n}$ real symmetric matrix and let $\lambda_1\ge \dots \ge \lambda_n$ be its eigenvalues in descending order. Show that 
     \[
     \lambda_k \le \max_{U: \dim(U) = k}\min_{x\in U: \|x\|_2 = 1} \langle Ax, x\rangle
@@ -561,7 +587,10 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     \langle Ax, x\rangle = \langle \sum^k_{i=1} a_i \lambda_i v_i, \sum_{i=1}^k a_i v_i\rangle = \sum_{i=1}^k \lambda_i a_i^2 \ge \sum_{i=1}^k a_i^2\lambda_k = \lambda_k
     \]
 \end{solution}
-\begin{bbox}{Projection Exercise}
+
+\subsection{Problem 15}
+
+\begin{bbox}{13: Projection Exercise}
     For a vector $\vec v \in \mathbb R^n \backslash \{0\}$, define the map $F: \mathbb R^n \to \mathbb R^n$ by 
     \[
     F(x) = \argmin_{z\in \text{Span}(\vec v)}\|z-x\|_2. 
@@ -583,7 +612,10 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     v^T x v = v(v^T x)=(vv^T)x
     \] since scalar-vector multiplication is commutative.
 \end{solution}
-\begin{bbox}{(Straightforward)Square Root of a Symmetric Matrix}
+
+\subsection{Problem 16}
+
+\begin{bbox}{14: (Straightforward)Square Root of a Symmetric Matrix}
     Suppose $A \in \mathbb R^{n\times n}$ and $A=A^T$ with all eigenvalues of $A$ being positive. Show there exists a matrix $B$ such that $B^2 = A$.
 \end{bbox}
 \begin{solution}
@@ -596,7 +628,10 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     B^2 = Q\sqrt{\Lambda}Q^TQ\sqrt{\Lambda}Q^T = Q\Lambda Q^T = A
     \]
 \end{solution}
-\begin{bbox}{$|\det|$ is equal to product of singular values}
+
+\subsection{Problem 17}
+
+\begin{bbox}{15: $|\det|$ is equal to product of singular values}
     Let $A\in \mathbb R^{n\times n}$ and let $\{\sigma_i\}_{i=1}^n$ be the singular values of $A$. Show that $|\det(A)| = \prod_{i=1}^n \sigma_i$ 
 \end{bbox}
 \begin{solution}
@@ -610,7 +645,10 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     \]
     Note that the determinant of orthonormal matrices is either $+1$ or $-1$, since $\det (Q)\det(Q^T) = \det(I)$ and transposition does not change the determinant.
 \end{solution}
-\begin{bbox}{Low-Rank Matrix Approximation}
+
+\subsection{Problem 18}
+
+\begin{bbox}{16: Low-Rank Matrix Approximation}
     Let $A\in \mathbb R^{m \times n}$ and for a positive integer $p < rank(A)$, define $A_p = \sum_{i=1}^p \sigma_i u_i v_i^T$ where $\sigma_i$ is the $i$th largest singular value of $A$, and $u_i, v_i$ are respective left and right singular vectors, i.e. the SVD is $A = U\Sigma V^T$. Then prove
     \[
     \sup_{x:\|x\|_2 = 1} \|(A-A_p)x\|_2 = \sigma_{p+1}
@@ -634,7 +672,9 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     which is equal to the biggest singular value of $U^T(A-A_p)V$, i.e. $\sigma_{p+1}$. 
 \end{solution}
 
-\begin{bbox}{Eigenvalues of Symmetric Idempotent Matrix}
+\subsection{Problem 19}
+
+\begin{bbox}{17: Eigenvalues of Symmetric Idempotent Matrix}
     Suppose $P\in \mathbb R^{n\times n}$ symmetric matrix that satisfies $P^2 = P$, a so-called idempotent matrix. Find all the eigenvalues of $P$ with their algebraic multiplicities in terms of $P$.
 \end{bbox}
 \begin{solution}
@@ -650,7 +690,10 @@ Let $A \in \mathbb R^{m\times n}$ be an $m\times n$ matrix with $n < m$. Suppose
     \]
     The eigenvalue $1$ of $P$ has multiplicity of $rank (\Lambda) = rank(P)$ since multiplication by an invertible matrix does not change the rank. Also, we then have that the multiplicity of the eigenvlue $\lambda=0$ is $n-rank(P)$.
 \end{solution}
-\begin{bbox}{Singular Covariance Matrix means Linearly Dependent a.s.}
+
+\subsection{Problem 20}
+
+\begin{bbox}{18: Singular Covariance Matrix means Linearly Dependent a.s.}
     Suppose that $\Sigma$ is the covariance matrix of $k$ zero-mean random variables $X_1,\dots, X_k$, i.e. if $X=(X_1, \dots, X_k)$, then $\Sigma:= \mathbb E[XX^T]$. Prove that if $\Sigma$ is singular, then $X_1,\dots, X_k$ are linearly dependent almost everywhere.
 \end{bbox}
 \begin{solution}
