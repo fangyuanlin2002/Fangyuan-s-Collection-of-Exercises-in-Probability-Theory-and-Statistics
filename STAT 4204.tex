@@ -1,0 +1,108 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% Theorem style
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Custom commands
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Prob}{\mathbb{P}}
+
+\title{Practice Problems in Statistical Inference}
+\author{Fangyuan Lin}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+
+\section*{Problem 1}
+\textbf{(Bayes Estimator Consistency)} \\
+Suppose $X_1,\dots,X_n$ are i.i.d.\ exponential($\theta$). The prior on $\theta$ is Gamma, squared error loss. Compute the Bayes estimator and show it is consistent.
+
+\subsection*{Solution}
+[Your solution here.]
+
+\newpage
+% -------------------------
+\section*{Problem 2}
+\textbf{(Linear Combination of Two Sample Means)} \\
+Two distributions $A,B$ share mean $\theta$, variances $\sigma_A^2=4\sigma_B^2$. Show $\hat{\theta}=\alpha \bar{X}_m + (1-\alpha)\bar{Y}_n$ is unbiased. Find $\alpha$ minimizing variance.
+
+\subsection*{Solution}
+[Your solution here.]
+
+\newpage
+% -------------------------
+\section*{Problem 3}
+\textbf{(MLE and Fisher Information)} \\
+$X_1,\dots,X_n \sim N(0,\sigma^2)$. Estimate $\theta=\log\sigma$. Find MLE and Fisher Information.
+
+\subsection*{Solution}
+[Your solution here.]
+
+\newpage
+% -------------------------
+\section*{Problem 4}
+\textbf{(Sufficiency for Gamma)} \\
+$X_1,\dots,X_n \sim \text{Gamma}(\alpha,\beta)$ with $\beta$ known. Show $T=\sum \log X_i$ is sufficient for $\alpha$.
+
+\subsection*{Solution}
+[Your solution here.]
+
+\newpage
+% -------------------------
+\section*{Problem 5}
+\textbf{(Confidence Interval Length)} \\
+$X_1,\dots,X_n \sim N(\mu,\sigma^2)$. Let $L$ = length of shortest $(1-\alpha)$ CI for $\mu$. Derive $\E(L^2)$, compute for $n=10,\alpha=0.05$, and discuss dependence on $n,\alpha$.
+
+\subsection*{Solution}
+[Your solution here.]
+
+\newpage
+% -------------------------
+\section*{Problem 6}
+\textbf{(Asymptotic Distribution of MLE)} \\
+$X_1,\dots,X_n \sim \text{Gamma}(\alpha,\beta)$, $\beta$ known. Show $\hat{\alpha}_{MLE}$ is asymptotically normal with mean $\alpha$ and given variance.
+
+\subsection*{Solution}
+[Your solution here.]
+
+\newpage
+% -------------------------
+\section*{Problem 7}
+\textbf{(One-Sided $t$-Test Power)} \\
+$X_1,\dots,X_8 \sim N(\mu,\sigma^2)$. Test $H_0:\mu \leq \mu_0$ vs $H_1:\mu > \mu_0$. Data: $\sum X_i=-11.2$, $\sum X_i^2=43.7$. With $\mu_0=0$, $\alpha=0.05$, should $H_0$ be rejected? Show invariance of power function.
+
+\subsection*{Solution}
+[Your solution here.]
+
+\newpage
+% -------------------------
+\section*{Problem 8}
+\textbf{(F-Test for Equality of Variances)} \\
+Samples from $N(\mu_1,\sigma_1^2)$ and $N(\mu_2,\sigma_2^2)$ of sizes $m,n$. Test $H_0:\sigma_1^2=\sigma_2^2$ vs $H_1:\sigma_1^2 \neq \sigma_2^2$. Derive power function of $F$-test, compute $c_1,c_2$ for $\alpha=0.05$, $m=11,n=21$.
+
+\subsection*{Solution}
+[Your solution here.]
+
+\newpage
+% -------------------------
+\section*{Problem 9}
+\textbf{(Polynomial Regression)} \\
+Regression model: $E[Y]=\beta_0+\beta_1 x+\beta_2 x^2$. Data: 20 pairs $(x_i,y_i)$. Compute MLEs $\hat{\beta}_0,\hat{\beta}_1,\hat{\beta}_2,\hat{\sigma}^2$, test $H_0:\beta_1=2$ vs $H_1:\beta_1\neq 2$ at $\alpha=0.05$.
+
+\subsection*{Solution}
+[Your solution here.]
+
+\end{document}
